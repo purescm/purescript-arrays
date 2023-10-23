@@ -13,7 +13,6 @@
           pushAllImpl
           toAssocArrayImpl
           sortByImpl
-          freeImpl
           thawImpl
           freezeImpl)
   (import (only (rnrs base) define lambda error list let begin cons if and < > >= +)
@@ -101,8 +100,6 @@
             
   (define copyImpl
     (lambda (xs) (srfi:214:flexvector-copy xs)))
-
-  (define freeImpl copyImpl)
 
   (define thawImpl copyImpl)
 
