@@ -24,8 +24,7 @@
   (define new
     (lambda () (rt:make-array)))
 
-  (define lengthImpl
-    (lambda (xs) (rt:array-length xs)))
+  (define lengthImpl rt:array-length)
 
   (define pokeImpl
     (lambda (i a xs)
