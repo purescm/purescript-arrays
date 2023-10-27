@@ -82,6 +82,7 @@
       (srfi:214:flexvector-append! xs as)
       (rt:array-length xs)))
 
+  ;; TODO this should be sorting in-place
   (define sortByImpl
     (lambda (compare fromOrdering xs)
       (srfi:214:list->flexvector

@@ -25,6 +25,7 @@
           unsafeIndexImpl
           )
   (import (only (rnrs base) define lambda begin quote let let* cond if not or * + - = < > >= boolean? error)
+          (only (rnrs sorting) list-sort)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -168,7 +169,10 @@
 
   (define sortByImpl
     (lambda (compare fromOrdering xs)
-      (error #f "sortByImpl not implemented")))
+      (srfi:214:list->flexvector
+        (list-sort
+          (lambda (x y) (> (fromOrdering ((compare y) x)) 0))
+          (srfi:214:flexvector->list xs)))))
 
 ;;------------------------------------------------------------------------------
 ;; Subarrays -------------------------------------------------------------------
