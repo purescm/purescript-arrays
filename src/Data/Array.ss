@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin let let* cond if not or * + - = < > >= boolean? error)
+  (import (only (rnrs base) define lambda begin quote let let* cond if not or * + - = < > >= boolean? error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -62,7 +62,9 @@
 
   (define unconsImpl
     (lambda (empty next xs)
-      (error #f "unconsImpl not implemented")))
+      (if (= (rt:array-length xs) 0)
+        (empty 'unit)
+        ((next (rt:array-ref xs 0)) (srfi:214:flexvector-copy xs 1)))))
 
   (define indexImpl
     (lambda (just nothing xs i)
