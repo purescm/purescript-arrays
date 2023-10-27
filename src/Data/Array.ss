@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda let error + -)
+  (import (only (rnrs base) define lambda begin let let* cond if not * + - = > error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -34,9 +34,17 @@
 
   (define rangeImpl
     (lambda (start end)
-      (let ([res (srfi:214:make-flexvector (+ (- end start) 1))])
-        (srfi:214:flexvector-map/index! (lambda (i x) (+ i start)) res)
-        res)))
+      (let* ([step (if (> start end) -1 1)]
+            [result (srfi:214:make-flexvector (+ (* step (- end start)) 1))])
+        (let recur ([i start]
+                    [n 0])
+          (if (not (= i end))
+            (begin
+              (srfi:214:flexvector-set! result n i)
+              (recur (+ i step) (+ n 1)))
+            (begin
+              (srfi:214:flexvector-set! result n i)
+              result))))))
 
   (define replicateImpl
     (lambda (count value)
