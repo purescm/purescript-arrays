@@ -107,7 +107,11 @@
 
   (define _deleteAt
     (lambda (just nothing i l)
-      (error #f "_deleteAt not implemented")))
+      (if (or (< i 0) (>= i (rt:array-length l)))
+        nothing
+        (let ([l1 (srfi:214:flexvector-copy l)])
+          (srfi:214:flexvector-remove! l1 i)
+          (just l1)))))
 
   (define _updateAt
     (lambda (just nothing i a l)
