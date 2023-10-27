@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin let let* cond if not * + - = < > boolean? error)
+  (import (only (rnrs base) define lambda begin let let* cond if not or * + - = < > boolean? error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -85,7 +85,11 @@
 
   (define _insertAt
     (lambda (just nothing i a l)
-      (error #f "_insertAt not implemented")))
+      (if (or (< i 0) (> i (rt:array-length l)))
+        nothing
+        (let ([l1 (srfi:214:flexvector-copy l)])
+          (srfi:214:flexvector-add! l1 i a)
+          (just l1)))))
 
   (define _deleteAt
     (lambda (just nothing i l)
