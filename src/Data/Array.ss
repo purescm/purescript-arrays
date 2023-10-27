@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin let let* cond if not or * + - = < > boolean? error)
+  (import (only (rnrs base) define lambda begin let let* cond if not or * + - = < > >= boolean? error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -66,7 +66,9 @@
 
   (define indexImpl
     (lambda (just nothing xs i)
-      (error #f "indexImpl not implemented")))
+      (if (or (< i 0) (>= i (rt:array-length xs)))
+        nothing
+        (just (rt:array-ref xs i)))))
 
   (define findMapImpl
     (lambda (nothing isJust f xs)
