@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin let let* cond if not * + - = > error)
+  (import (only (rnrs base) define lambda begin let let* cond if not * + - = < > error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -48,8 +48,12 @@
 
   (define replicateImpl
     (lambda (count value)
-      (error #f "replicateImpl not implemented")))
-
+      (if (< count 1)
+        (rt:make-array)
+        (let ([result (srfi:214:make-flexvector count)])
+          (srfi:214:flexvector-fill! result value)
+          result))))
+      
   (define fromFoldableImpl
     (lambda (foldr xs)
       (error #f "fromFoldableImpl not implemented")))
