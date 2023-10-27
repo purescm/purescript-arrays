@@ -132,9 +132,7 @@
     (lambda (xss)
       (srfi:214:flexvector-concatenate (srfi:214:flexvector->list xss))))
 
-  (define filterImpl
-    (lambda (f xs)
-      (error #f "filterImpl not implemented")))
+  (define filterImpl srfi:214:flexvector-filter)
 
   (define partitionImpl
     (lambda (f xs)
