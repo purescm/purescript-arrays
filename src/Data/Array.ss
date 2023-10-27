@@ -115,7 +115,12 @@
 
   (define _updateAt
     (lambda (just nothing i a l)
-      (error #f "_updateAt not implemented")))
+      (if (or (< i 0) (>= i (rt:array-length l)))
+        nothing
+        (let ([l1 (srfi:214:flexvector-copy l)])
+          (srfi:214:flexvector-set! l1 i a)
+          (just l1)))))
+
 
 ;;------------------------------------------------------------------------------
 ;; Transformations -------------------------------------------------------------
