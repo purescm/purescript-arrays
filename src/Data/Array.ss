@@ -126,9 +126,7 @@
 ;; Transformations -------------------------------------------------------------
 ;;------------------------------------------------------------------------------
 
-  (define reverse
-    (lambda (l)
-      (error #f "reverse not implemented")))
+  (define reverse srfi:214:flexvector-reverse-copy)
 
   (define concat
     (lambda (xss)
