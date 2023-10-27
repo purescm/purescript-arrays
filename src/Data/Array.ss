@@ -130,7 +130,7 @@
 
   (define concat
     (lambda (xss)
-      (error #f "concat not implemented")))
+      (srfi:214:flexvector-concatenate (srfi:214:flexvector->list xss))))
 
   (define filterImpl
     (lambda (f xs)
