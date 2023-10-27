@@ -160,7 +160,9 @@
 
   (define sliceImpl
     (lambda (s e l)
-      (srfi:214:flexvector-copy l s e)))
+      (if (> s e)
+        (rt:make-array)
+        (srfi:214:flexvector-copy l s e))))
 
 ;;------------------------------------------------------------------------------
 ;; Zipping ---------------------------------------------------------------------
