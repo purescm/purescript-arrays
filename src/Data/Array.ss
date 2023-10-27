@@ -78,7 +78,10 @@
 
   (define findIndexImpl
     (lambda (just nothing f xs)
-      (error #f "findIndexImpl not implemented")))
+      (let ([i (srfi:214:flexvector-index f xs)])
+        (if (boolean? i)
+          nothing
+          (just i)))))
 
   (define findLastIndexImpl
     (lambda (just nothing f xs)
