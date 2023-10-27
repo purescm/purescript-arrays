@@ -35,7 +35,7 @@
   (define rangeImpl
     (lambda (start end)
       (let* ([step (if (> start end) -1 1)]
-            [result (srfi:214:make-flexvector (+ (* step (- end start)) 1))])
+             [result (srfi:214:make-flexvector (+ (* step (- end start)) 1))])
         (let recur ([i start]
                     [n 0])
           (if (not (= i end))
@@ -140,11 +140,27 @@
 
   (define scanlImpl
     (lambda (f b xs)
-      (error #f "scanlImpl not implemented")))
+      (let* ([len (rt:array-length xs)]
+             [out (srfi:214:make-flexvector len)])
+        (let recur ([i 0]
+                    [acc b])
+          (if (< i len)
+            (let ([next ((f acc) (rt:array-ref xs i))])
+              (srfi:214:flexvector-set! out i next)
+              (recur (+ i 1) next))
+            out)))))
 
   (define scanrImpl
     (lambda (f b xs)
-      (error #f "scanrImpl not implemented")))
+      (let* ([len (rt:array-length xs)]
+             [out (srfi:214:make-flexvector len)])
+        (let recur ([i (- len 1)]
+                    [acc b])
+          (if (>= i 0)
+            (let ([next ((f (rt:array-ref xs i)) acc)])
+              (srfi:214:flexvector-set! out i next)
+              (recur (- i 1) next))
+            out)))))
 
 ;;------------------------------------------------------------------------------
 ;; Sorting ---------------------------------------------------------------------
