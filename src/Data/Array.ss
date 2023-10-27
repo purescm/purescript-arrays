@@ -196,13 +196,9 @@
 ;; Folding ---------------------------------------------------------------------
 ;;------------------------------------------------------------------------------
 
-  (define anyImpl
-    (lambda (p xs)
-      (error #f "anyImpl not implemented")))
+  (define anyImpl srfi:214:flexvector-any)
 
-  (define allImpl
-    (lambda (p xs)
-      (error #f "allImpl not implemented")))
+  (define allImpl srfi:214:flexvector-every)
 
 ;;------------------------------------------------------------------------------
 ;; Partial ---------------------------------------------------------------------
