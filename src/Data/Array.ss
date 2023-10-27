@@ -24,7 +24,7 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin let let* cond if not * + - = < > error)
+  (import (only (rnrs base) define lambda begin let let* cond if not * + - = < > boolean? error)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -78,7 +78,10 @@
 
   (define findLastIndexImpl
     (lambda (just nothing f xs)
-      (error #f "findLastIndexImpl not implemented")))
+      (let ([i (srfi:214:flexvector-index-right f xs)])
+        (if (boolean? i)
+          nothing
+          (just i)))))
 
   (define _insertAt
     (lambda (just nothing i a l)
