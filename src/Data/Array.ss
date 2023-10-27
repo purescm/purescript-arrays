@@ -74,7 +74,14 @@
 
   (define findMapImpl
     (lambda (nothing isJust f xs)
-      (error #f "findMapImpl not implemented")))
+      (let ([len (rt:array-length xs)])
+        (let recur ([i 0])
+          (if (< i len)
+            (let ([result (f (rt:array-ref xs i))])
+              (if (isJust result)
+                result
+                (recur (+ i 1))))
+            nothing)))))
 
   (define findIndexImpl
     (lambda (just nothing f xs)
