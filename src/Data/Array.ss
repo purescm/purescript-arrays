@@ -54,9 +54,7 @@
     (lambda (foldr xs)
       (error #f "fromFoldableImpl not implemented")))
 
-  (define length
-    (lambda (xs)
-      (error #f "length not implemented")))
+  (define length rt:array-length)
 
   (define unconsImpl
     (lambda (empty next xs)
