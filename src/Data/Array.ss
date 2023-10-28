@@ -233,7 +233,7 @@
 
   (define zipWithImpl
     (lambda (f xs ys)
-      (error #f "zipWithImpl not implemented")))
+      (srfi:214:flexvector-map (lambda (x y) ((f x) y)) xs ys)))
 
 ;;------------------------------------------------------------------------------
 ;; Folding ---------------------------------------------------------------------
