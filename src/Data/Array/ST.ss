@@ -91,7 +91,7 @@
           (define merge!
             ;; l = index of start of the left-side
             ;; m = index of start of the right-side
-            ;; r = index of last element of right-size
+            ;; r = index of last element of right-side
             (lambda (l m r)
               ;; Make temporary copies of left and right
               (let ([lc (srfi:214:flexvector-copy xs l m)]
