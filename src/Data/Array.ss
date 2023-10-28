@@ -24,7 +24,9 @@
           allImpl
           unsafeIndexImpl
           )
-  (import (only (rnrs base) define lambda begin quote let let* cond if not and or * + - = < > >= <= boolean? error)
+  (import (only (rnrs base) define lambda begin quote cons
+                            let let* cond if not and or * +
+                            - = < > >= <= boolean? error)
           (only (chezscheme) fx/)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
@@ -57,7 +59,8 @@
       
   (define fromFoldableImpl
     (lambda (foldr xs)
-      (error #f "fromFoldableImpl not implemented")))
+      (define kons (lambda (head) (lambda (tail) (cons head tail))))
+      (srfi:214:list->flexvector (((foldr kons) '()) xs))))
 
   (define length rt:array-length)
 
