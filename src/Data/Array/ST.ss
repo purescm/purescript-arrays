@@ -15,8 +15,8 @@
           sortByImpl
           thawImpl
           freezeImpl)
-  (import (only (rnrs base) define lambda let begin cons if and < > >= +)
-          (only (rnrs sorting) list-sort)
+  (import (only (rnrs base) define lambda cond let let* begin cons if and < > >= <= + -)
+          (only (chezscheme) fx/)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
           
@@ -82,13 +82,52 @@
       (srfi:214:flexvector-append! xs as)
       (rt:array-length xs)))
 
-  ;; TODO this should be sorting in-place
   (define sortByImpl
     (lambda (compare fromOrdering xs)
-      (srfi:214:list->flexvector
-        (list-sort
-          (lambda (x y) (> (fromOrdering ((compare y) x)) 0))
-          (srfi:214:flexvector->list xs)))))
+
+      (define sort!
+        (lambda (xs start end)
+
+          (define merge!
+            ;; l = index of start of the left-side
+            ;; m = index of start of the right-side
+            ;; r = index of last element of right-size
+            (lambda (l m r)
+              ;; Make temporary copies of left and right
+              (let ([lc (srfi:214:flexvector-copy xs l m)]
+                    [rc (srfi:214:flexvector-copy xs m (+ r 1))])
+                (let loop ([k l]
+                           [li 0]
+                           [ri 0])
+                  (cond
+                    [(and (< li (rt:array-length lc)) (< ri (rt:array-length rc)))
+                      (let ([x (rt:array-ref lc li)]
+                            [y (rt:array-ref rc ri)])
+                        (if (<= (fromOrdering ((compare x) y)) 0)
+                          (begin
+                            (srfi:214:flexvector-set! xs k x)
+                            (loop (+ k 1) (+ li 1) ri))
+                          (begin
+                            (srfi:214:flexvector-set! xs k y)
+                            (loop (+ k 1) li (+ ri 1)))))]
+                    [(< li (rt:array-length lc))
+                      (begin
+                        (srfi:214:flexvector-set! xs k (rt:array-ref lc li))
+                        (loop (+ k 1) (+ li 1) ri))]
+
+                    [(< ri (rt:array-length rc))
+                      (begin
+                        (srfi:214:flexvector-set! xs k (rt:array-ref rc ri))
+                        (loop (+ k 1) li (+ ri 1)))])))))
+
+            (if (< (- end start) 1)
+              xs
+              (let* ([middle (+ start (fx/ (- end start) 2))])
+                (sort! xs start middle)
+                (sort! xs (+ middle 1) end)
+                (merge! start (+ middle 1) end)))))
+
+      (sort! xs 0 (- (rt:array-length xs) 1))))
 
   (define toAssocArrayImpl
     (lambda (xs)
