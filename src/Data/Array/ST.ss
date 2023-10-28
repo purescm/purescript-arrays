@@ -127,7 +127,8 @@
                 (sort! xs (+ middle 1) end)
                 (merge! start (+ middle 1) end)))))
 
-      (sort! xs 0 (- (rt:array-length xs) 1))))
+      (sort! xs 0 (- (rt:array-length xs) 1))
+      xs))
 
   (define toAssocArrayImpl
     (lambda (xs)
