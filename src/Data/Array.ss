@@ -27,7 +27,7 @@
   (import (only (rnrs base) define lambda begin quote cons
                             let let* let-values cond if not and or
                             * + - = < > >= <= boolean?)
-          (only (rnrs sorting) list-sort vector-sort!)
+          (only (rnrs sorting) vector-sort!)
           (only (chezscheme) fx/)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
