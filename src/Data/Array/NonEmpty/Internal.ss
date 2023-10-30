@@ -3,7 +3,7 @@
           foldl1Impl
           traverse1Impl)
   (import (only (rnrs base) define lambda list cons let if quote)
-          (only (chezscheme) fx- fx< fx>= fx+)
+          (only (chezscheme) fx- fx< fx>= fx1- fx1+)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
 
@@ -12,14 +12,14 @@
       (let loop ([acc (srfi:214:flexvector-back xs)]
                  [i (fx- (rt:array-length xs) 2)])
         (if (fx>= i 0)
-          (loop ((f (rt:array-ref xs i)) acc) (fx- i 1))
+          (loop ((f (rt:array-ref xs i)) acc) (fx1- i))
           acc))))
 
   (define foldl1Impl
     (lambda (f xs)
       (let loop ([acc (rt:array-ref xs 0)] [i 1])
         (if (fx< i (rt:array-length xs))
-          (loop ((f acc) (rt:array-ref xs i)) (fx+ i 1))
+          (loop ((f acc) (rt:array-ref xs i)) (fx1+ i))
           acc))))
 
   (define traverse1Impl
@@ -32,5 +32,5 @@
          (srfi:214:flexvector-fold-right
            (lambda (s x) ((apply ((map kons) (f x))) s))
            ((map list) (f (srfi:214:flexvector-back array)))
-           (srfi:214:flexvector-copy array 0 (fx- (rt:array-length array) 1)))))))
+           (srfi:214:flexvector-copy array 0 (fx1- (rt:array-length array))))))))
 )
