@@ -2,7 +2,7 @@
   (export foldr1Impl
           foldl1Impl
           traverse1Impl)
-  (import (only (rnrs base) define lambda list cons let if quote)
+  (import (only (rnrs base) define lambda list cons let if)
           (only (chezscheme) fx- fx< fx>= fx1- fx1+)
           (prefix (purs runtime lib) rt:)
           (prefix (purs runtime srfi :214) srfi:214:))
